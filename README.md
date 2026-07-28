@@ -25,6 +25,23 @@ finding in real environments, not a contrived one.
 Full reasoning for both of those decisions is in
 [docs/engineering-decisions/](docs/engineering-decisions/).
 
+## Result
+
+Full domain compromise, from a starting position of zero credentials.
+Responder captured a credential hash from ordinary broadcast traffic on
+WS01, cracked offline, then used to Kerberoast the planted `svc-appsvc`
+account and crack its password too, landing a shell on DC01 as a Domain
+Admin.
+
+Checking every step against Sentinel found a genuinely mixed result: the
+loud steps (a Domain Admins group change, the final privileged logon) were
+caught by Wazuh's default ruleset with no extra work, while Kerberoasting
+itself slipped through as a generic, unflagged event. That gap didn't stay
+open: a custom Wazuh rule was written, deployed and validated live against
+a second run of the same attack, closing it. Full evidence and every
+command used is in
+[the engagement guide](docs/setup/engagement-guide.md).
+
 ## Relationship to Atlas and Sentinel
 
 Hunt doesn't rebuild or redesign anything Atlas or Sentinel already locked
@@ -46,11 +63,12 @@ step.
 ## Roadmap
 
 - Engagement scope and methodology — complete
-- Initial access (LLMNR/NBT-NS poisoning) — planned
-- Privilege escalation (Kerberoasting) — planned
-- Domain compromise confirmed — planned
-- Detection review against Sentinel — planned
-- Hunt v1.0 — planned
+- Initial access (LLMNR/NBT-NS poisoning) — complete
+- Privilege escalation (Kerberoasting) — complete
+- Domain compromise confirmed — complete
+- Detection review against Sentinel — complete
+- Custom Kerberoasting detection rule (closing the gap found) — complete
+- Hunt v1.0 — complete
 
 ## WolfSec Labs portfolio
 

@@ -69,6 +69,10 @@ not contrived.
 
 ## Current Status
 
-Engagement scope and methodology locked. Attack chain execution starts next:
-LLMNR/NBT-NS poisoning for initial access, Kerberoasting for escalation, then
-a detection review against Sentinel's dashboard.
+Engagement complete. Full domain compromise achieved via LLMNR/NBT-NS
+poisoning and Kerberoasting, checked against Sentinel's dashboard, and the
+one detection gap found (Kerberoasting itself) closed with a custom Wazuh
+rule, validated live. See
+[the engagement guide](../setup/engagement-guide.md) and
+[the engineering journal](../notes/engineering-journal.md) for the full
+attack chain and evidence.
