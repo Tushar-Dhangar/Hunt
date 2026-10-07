@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 940" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <rect x="0" y="0" width="920" height="940" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="40" y="44" font-size="24" font-weight="700" fill="#0f172a">Hunt · Attack Path</text>
+  <text x="40" y="70" font-size="15" fill="#475569">LLMNR/NBT-NS poisoning to full domain compromise, apexdynamics.internal</text>
+
+  <!-- Legend -->
+  <rect x="610" y="30" width="14" height="14" rx="3" fill="#dcfce7" stroke="#16a34a"/>
+  <text x="630" y="42" font-size="12" fill="#475569">detected by Sentinel</text>
+  <rect x="610" y="52" width="14" height="14" rx="3" fill="#fee2e2" stroke="#dc2626"/>
+  <text x="630" y="64" font-size="12" fill="#475569">not detected</text>
+
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#94a3b8"/>
+    </marker>
+  </defs>
+
+  <!-- Spine -->
+  <line x1="230" y1="150" x2="230" y2="852" stroke="#e2e8f0" stroke-width="2"/>
+
+  <!-- Stage 1: KALI01 -->
+  <rect x="80" y="110" width="300" height="64" rx="10" fill="#f8fafc" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="100" y="140" font-size="17" font-weight="700" fill="#0f172a">KALI01 · 10.10.10.40</text>
+  <text x="100" y="162" font-size="13" fill="#475569">attacker position on corpnet</text>
+  <line x1="230" y1="174" x2="230" y2="208" stroke="#94a3b8" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- Stage 2: LLMNR poisoning -->
+  <rect x="80" y="210" width="300" height="74" rx="10" fill="#f8fafc" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="100" y="238" font-size="16" font-weight="700" fill="#0f172a">LLMNR/NBT-NS poisoning</text>
+  <text x="100" y="259" font-size="13" fill="#475569">Responder answers a failed lookup</text>
+  <text x="100" y="277" font-size="13" fill="#475569">captures NTLMv2 hash for james.whitmore</text>
+  <!-- detection badge -->
+  <rect x="470" y="212" width="370" height="70" rx="10" fill="#fee2e2" stroke="#dc2626" stroke-width="1.2"/>
+  <text x="488" y="238" font-size="14" font-weight="700" fill="#991b1b">Not detected</text>
+  <text x="488" y="258" font-size="12.5" fill="#7f1d1d">network-layer technique; host agents have</text>
+  <text x="488" y="274" font-size="12.5" fill="#7f1d1d">no visibility (would need Zeek/Suricata)</text>
+  <line x1="230" y1="284" x2="230" y2="318" stroke="#94a3b8" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- Stage 3: crack hash -->
+  <rect x="80" y="320" width="300" height="64" rx="10" fill="#f8fafc" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="100" y="350" font-size="16" font-weight="700" fill="#0f172a">Offline crack (John)</text>
+  <text x="100" y="372" font-size="13" fill="#475569">hash → password: Password1</text>
+  <line x1="230" y1="384" x2="230" y2="418" stroke="#94a3b8" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- Stage 4: Kerberoast -->
+  <rect x="80" y="420" width="300" height="74" rx="10" fill="#f8fafc" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="100" y="448" font-size="16" font-weight="700" fill="#0f172a">Kerberoast svc-appsvc</text>
+  <text x="100" y="469" font-size="13" fill="#475569">GetUserSPNs -request</text>
+  <text x="100" y="487" font-size="13" fill="#475569">krb5tgs ticket → crack: Password123</text>
+  <!-- detection badge -->
+  <rect x="470" y="422" width="370" height="70" rx="10" fill="#fee2e2" stroke="#dc2626" stroke-width="1.2"/>
+  <text x="488" y="448" font-size="14" font-weight="700" fill="#991b1b">Not detected by default</text>
+  <text x="488" y="468" font-size="12.5" fill="#7f1d1d">4769 logged as generic logon success</text>
+  <text x="488" y="484" font-size="12.5" fill="#166534">→ closed with custom rule 100010 (T1558.003)</text>
+  <line x1="230" y1="494" x2="230" y2="528" stroke="#94a3b8" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- Stage 5: use credential -->
+  <rect x="80" y="530" width="300" height="64" rx="10" fill="#f8fafc" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="100" y="560" font-size="16" font-weight="700" fill="#0f172a">Authenticate as svc-appsvc</text>
+  <text x="100" y="582" font-size="13" fill="#475569">NetExec → Pwn3d! (Domain Admin)</text>
+  <!-- detection badge: DA change happened at setup, logon detected -->
+  <rect x="470" y="532" width="370" height="60" rx="10" fill="#dcfce7" stroke="#16a34a" stroke-width="1.2"/>
+  <text x="488" y="557" font-size="14" font-weight="700" fill="#166534">Detected</text>
+  <text x="488" y="577" font-size="12.5" fill="#14532d">privileged logon flagged (rule 92652, level 6)</text>
+  <line x1="230" y1="594" x2="230" y2="628" stroke="#94a3b8" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- Stage 6: compromise -->
+  <rect x="80" y="630" width="300" height="80" rx="10" fill="#0f172a" stroke="#0f172a"/>
+  <text x="100" y="662" font-size="17" font-weight="700" fill="#ffffff">DC01 · 10.10.10.10</text>
+  <text x="100" y="684" font-size="13" fill="#cbd5e1">wmiexec shell as apex\svc-appsvc</text>
+  <text x="100" y="702" font-size="14" font-weight="700" fill="#fca5a5">DOMAIN COMPROMISE</text>
+
+  <!-- Supporting note: Domain Admins change -->
+  <rect x="470" y="632" width="370" height="76" rx="10" fill="#dcfce7" stroke="#16a34a" stroke-width="1.2"/>
+  <text x="488" y="658" font-size="14" font-weight="700" fill="#166534">Detected (highest-severity catch)</text>
+  <text x="488" y="678" font-size="12.5" fill="#14532d">Domain Admins group change: rule 60159,</text>
+  <text x="488" y="694" font-size="12.5" fill="#14532d">level 12, fired on the privilege escalation</text>
+
+  <!-- MON01 watcher footer -->
+  <rect x="80" y="770" width="760" height="64" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.2"/>
+  <text x="100" y="799" font-size="15" font-weight="700" fill="#1e3a8a">MON01 · 10.10.10.100 · Wazuh (watching every step above)</text>
+  <text x="100" y="821" font-size="13" fill="#1e40af">loud steps caught by default ruleset; the quiet Kerberoasting step needed a custom rule</text>
+
+  <text x="40" y="892" font-size="12" fill="#94a3b8">WolfSec Labs · Hunt · full evidence in docs/setup/engagement-guide.md</text>
+</svg>

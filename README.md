@@ -8,6 +8,8 @@ separate throwaway target. Every finding in Hunt is a real result against
 real infrastructure, and every step gets checked against Sentinel's
 dashboard to see what actually got caught.
 
+![Attack path](assets/diagrams/attack-path.svg)
+
 ## This engagement
 
 Scope is an internal, assumed-breach style assessment against the Windows
@@ -38,8 +40,11 @@ loud steps (a Domain Admins group change, the final privileged logon) were
 caught by Wazuh's default ruleset with no extra work, while Kerberoasting
 itself slipped through as a generic, unflagged event. That gap didn't stay
 open: a custom Wazuh rule was written, deployed and validated live against
-a second run of the same attack, closing it. Full evidence and every
-command used is in
+a second run of the same attack, closing it.
+
+The findings are written up in report form in
+[the findings report](docs/findings-report.md), and the full attack chain
+with every command and raw output is in
 [the engagement guide](docs/setup/engagement-guide.md).
 
 ## Relationship to Atlas and Sentinel
